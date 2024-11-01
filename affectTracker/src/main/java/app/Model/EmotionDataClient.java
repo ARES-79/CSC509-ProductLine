@@ -1,6 +1,8 @@
 package app.Model;
 
+import java.io.DataInputStream;
 import java.io.IOException;
+import java.net.Socket;
 import java.util.logging.Logger;
 
 /**
@@ -19,8 +21,14 @@ public class EmotionDataClient extends ClientThread {
 	
 	public static final String THREAD_NAME = "EmotionDataClient";
 	
-	public EmotionDataClient(String host, int port) {
-		super(host, port);
+//	public EmotionDataClient(String host, int port) {
+//		super(host, port);
+//		super.setLog(Logger.getLogger(EmotionDataClient.class.getName()));
+//		super.setThreadName(THREAD_NAME);
+//	}
+
+	public EmotionDataClient(Socket connection, DataInputStream inputStream) {
+		super(connection, inputStream);
 		super.setLog(Logger.getLogger(EmotionDataClient.class.getName()));
 		super.setThreadName(THREAD_NAME);
 	}

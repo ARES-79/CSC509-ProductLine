@@ -1,6 +1,8 @@
 package app.Model;
 
+import java.io.DataInputStream;
 import java.io.IOException;
+import java.net.Socket;
 import java.util.logging.Logger;
 
 /**
@@ -19,9 +21,15 @@ public class EyeTrackingClient extends ClientThread {
 	
 	public static final String THREAD_NAME = "EyeTrackingClient";
 	
-	public EyeTrackingClient(String host, int port) {
-		super(host, port);
-		super.setLog(Logger.getLogger(EmotionDataClient.class.getName()));
+//	public EyeTrackingClient(String host, int port) {
+//		super(host, port);
+//		super.setLog(Logger.getLogger(EyeTrackingClient.class.getName()));
+//		super.setThreadName(THREAD_NAME);
+//	}
+
+	public EyeTrackingClient(Socket connection, DataInputStream inputStream) {
+		super(connection, inputStream);
+		super.setLog(Logger.getLogger(EyeTrackingClient.class.getName()));
 		super.setThreadName(THREAD_NAME);
 	}
 	

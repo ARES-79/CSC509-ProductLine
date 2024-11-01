@@ -14,16 +14,23 @@ import java.util.logging.Level;
  */
 public abstract class ClientThread extends CustomThread {
 	
-	private final String IP_host;
-	private final int IP_port;
+//	private final String IP_host;
+//	private final int IP_port;
 	private Socket connection;
 	private DataInputStream inputStream;
 	
-	public ClientThread(String IP_host, int IP_port) {
-		this.IP_host = IP_host;
-		this.IP_port = IP_port;
+//	public ClientThread(String IP_host, int IP_port) {
+//		this.IP_host = IP_host;
+//		this.IP_port = IP_port;
+//	}
+
+	public ClientThread(Socket connection, DataInputStream inputStream){
+		this.connection = connection;
+		this.inputStream = inputStream;
+		//this.inputStream = new DataInputStream(connection.getInputStream());
 	}
 	
+/*
 	@Override
 	public void run() {
 		try (Socket connection = new Socket(IP_host, IP_port);
@@ -39,7 +46,8 @@ public abstract class ClientThread extends CustomThread {
 			super.getLog().log(Level.SEVERE, super.getThreadName() + ": Unable to connect to server.");
 		}
 	}
-	
+*/
+
 	@Override
 	public void cleanUpThread() {
 		try {
