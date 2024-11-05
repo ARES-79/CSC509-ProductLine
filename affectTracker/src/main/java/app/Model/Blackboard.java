@@ -30,6 +30,10 @@ import app.Data.ProcessedDataObject;
  * @version 1.0
  */
 public class Blackboard extends PropertyChangeSupport {
+   private Delegates.EyeTrackingDelegate eyeTrackingDelegate;
+   private Delegates.EmotionDataDelegate emotionDataDelegate;
+   private Delegates.CircleDisplayDelegate circleDisplayDelegate;
+
 	private String eyeTrackingSocket_Host = "localhost";  // default for testing
 	private int eyeTrackingSocket_Port = 6001;  // default for testing
 	private final BlockingQueue<String> eyeTrackingQueue;
@@ -63,9 +67,25 @@ public class Blackboard extends PropertyChangeSupport {
 	public static Blackboard getInstance() {
 		return INSTANCE;
 	}
+
+   // set delegates
+   public void setEyeTrackingDelegate(Delegates.EyeTrackingDelegate eyeTrackingDelegate) {
+      this.eyeTrackingDelegate = eyeTrackingDelegate;
+   }
+
+   public void setEmotionDataDelegate(Delegates.EmotionDataDelegate emotionDataDelegate) {
+      this.emotionDataDelegate = emotionDataDelegate;
+   }
+
+   public void setCircleDisplayDelegate(Delegates.CircleDisplayDelegate circleDisplayDelegate) {
+      this.circleDisplayDelegate = circleDisplayDelegate;
+   }
 	
 	public void addToEyeTrackingQueue(String data) throws InterruptedException {
 		eyeTrackingQueue.put(data);
+      if (eyeTrackingDelegate != null) {
+         eyeTrackingDelegate.processEyeTrackingData(data);
+      }
 	}
 	
 	public String pollEyeTrackingQueue() throws InterruptedException {
@@ -74,6 +94,9 @@ public class Blackboard extends PropertyChangeSupport {
 	
 	public void addToEmotionQueue(String data) throws InterruptedException {
 		emotionQueue.put(data);
+      if (emotionDataDelegate != null) {
+         emotionDataDelegate.processEmotionData(data);
+      }
 	}
 	
 	public String pollEmotionQueue() throws InterruptedException {
@@ -96,6 +119,9 @@ public class Blackboard extends PropertyChangeSupport {
 	public void setCircleList(Deque<Circle> circleList) {
 		this.circleList = circleList;
 		firePropertyChange(PROPERTY_NAME_VIEW_DATA, null, null);
+      if (circleDisplayDelegate != null) {
+         circleDisplayDelegate.updateCircleDisplay(circleList);
+      }
 	}
 	
 	public String getFormattedConnectionSettings() {
